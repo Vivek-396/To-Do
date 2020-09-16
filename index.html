@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>To-Do List</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="To-Do List">
+    <meta name="keywords" content="HTML, JavaScript">
+    <meta name="author" content="Vivek">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+    <div>
+        <h1>TodoMatic</h1>
+        <h2>What needs to be done?</h2>
+
+        <form onsubmit="return false;" autocomplete="off">
+            <input type="text" id="text" />
+            <input type="checkbox" id="check" />
+            <button type="submit" id="addBtn">Add</button>
+        </form>
+
+        <hr><br>
+        <button type="button" id="showAllBtn">Show All Tasks</button>
+        <button type="button" id="showActiveBtn">Show Active Tasks</button>
+        <button type="button" id="showCompleteBtn">Show Completed Tasks</button>
+        <button type="button" id="sortTimeBtn">Sort Tasks Time Based</button>
+        <button type="button" id="sortLexicoBtn">Sort Tasks Lexicographic Order</button>
+        <div id="result"></div>
+
+    </div>
+
+    <script src="myScripts.js"></script>
+</body>
+
+</html>
