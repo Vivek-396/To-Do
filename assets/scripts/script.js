@@ -1,34 +1,58 @@
-document.getElementById("addBtn").addEventListener("click", addTask);
 document.getElementById("showAllBtn").addEventListener("click", showAllTask);
 document.getElementById("showActiveBtn").addEventListener("click", showActiveTask);
 document.getElementById("showCompleteBtn").addEventListener("click", showCompleteTask);
 document.getElementById("sortTimeBtn").addEventListener("click", sortTaskTime);
 document.getElementById("sortLexicoBtn").addEventListener("click", sortTaskLexico);
+document.getElementById("sortLexicoBtn").addEventListener("click", sortTaskLexico);
+document.getElementById("form").addEventListener("submit", formSubmit);
 
+var res = document.getElementById("result");
 var tasks = [];
 
-function Task() {
-    this.taskName;
-    this.done = 0; //t-f
-    this.time;
+
+function formSubmit(e) {
+    e.preventDefault();
+
+    var check_ele = e.target.elements;
+
+    //Recording text input
+    var inputText1 = check_ele[0].value;
+
+    //Recording state of checkbox
+    var inputCheck1 = check_ele[1].checked;
+
+    if (inputText1.trim()) { //Check for space string
+        var t1 = createObj(inputText1, inputCheck1, +new Date());
+        addTask(t1);
+    }
+
+    e.target.reset();
+}
+
+
+function Task(name, done, time) { //Encapsulation
+    this.taskName = name;
+    this.time = time;
+    this.done = done; //t-f
+}
+
+function createObj(name, done, time) {
+    var obj = new Task(name, done, time);
+    Object.defineProperties(obj, {
+        property1: {
+            configurable: false
+        },
+        property2: {
+            configurable: false
+        }
+    });
+    return obj;
 }
 
 //Add
-function addTask() {
-    var temp = document.getElementById("text");
-
-    if (temp.value != "") {
-        var dt = new Date();
-
-        var t1 = new Task();
-        t1.taskName = temp.value;
-        t1.time = dt.getTime(); //this.time ->freeze  in constructor, modules
-
-        tasks.push(t1);
-        temp.value = null;
-    }
+function addTask(obj) {
+    tasks.push(obj);
     showAllTask();
-
 }
 
 //Display Function
@@ -38,43 +62,37 @@ function display(arr, temp) {
         { list += "<li>" + arr[i].taskName + "</li>" }
     }
     list += "</ul>";
-    document.getElementById("result").innerHTML = temp + list;
+    res.innerHTML = temp + list;
 }
 
 //Show All
-function showAllTask() {
-    var temp = "<h2> All Tasks</h2><br>";
+
+function showAllTask(e) {
+    var temp = "<h3> All Tasks</h3>";
     var list = "<ul>";
 
-    for (var i = 0; i < tasks.length; i++) {
-        if (tasks[i].done == 0) {
-            list += "<li>" + "<input type=\"checkbox\"  class=\"check\" id=\"" + i + "\">" + tasks[i].taskName + "<button type = \"button\"" + "class=\"btns\" id=" + i + ">Delete</button></li>";
-            //console.log("done = 0");
-        } else {
-            list += "<li>" + "<input type=\"checkbox\"  class=\"check\" id=\"" + i + "\"checked>" + tasks[i].taskName + "<button type = \"button\"" + "class=\"btns\" id=" + i + ">Delete</button></li>";
-            //console.log("done = 1");
-        }
+    for (var i = 0; i < tasks.length; i++) { //List into single line
+        list += "<li><input type=\"checkbox\"  class=\"check\" id=\"" + i + ((tasks[i].done == false) ? "\">" : "\"checked>") + "  " + tasks[i].taskName + "  <button type = \"button\"" + "class=\"btns\" id=" + i + ">Delete</button></li>";
     }
 
-    list += "</ul>";
-    document.getElementById("result").innerHTML = temp + list;
+    list += "</ul";
+    res.innerHTML = temp + list;
 
     addEvents();
 }
 
-
+//Cant be applied simultaneously as DOM painting is dynamic
 function addEvents() {
     //Checkbox Events
-
     var ele1 = document.getElementsByClassName("check");
     for (var i = 0; i < ele1.length; i++) {
         ele1[i].addEventListener('click', handleCheckBox);
     }
+
     //Button Events
     var ele2 = document.getElementsByClassName("btns");
     for (var i = 0; i < ele2.length; i++) {
         ele2[i].addEventListener('click', handleButtons);
-        //console.log("adding Events : " + i);
     }
 }
 
@@ -89,6 +107,7 @@ function handleCheckBox(e) {
 function handleButtons(e) {
 
     var index = e.target.getAttribute("id");
+    //console.log(status.checked);
     //console.log(index);
     tasks.splice(index, 1);
     showAllTask();
@@ -96,28 +115,28 @@ function handleButtons(e) {
 
 //Active Tasks
 function showActiveTask() {
-    var res = tasks.filter(task => task.done == 0);
-    var temp = "<h2>" + res.length + " Tasks Still On Progress</h2><br>";
+    var res = tasks.filter(task => task.done == false);
+    var temp = "<h3>" + res.length + " Tasks Still On Progress</h3>";
     display(res, temp);
 }
 
 
 function showCompleteTask() {
-    var res = tasks.filter(task => task.done == 1);
-    var temp = "<h2>" + res.length + " Tasks Completed</h2><br>";
+    var res = tasks.filter(task => task.done == true);
+    var temp = "<h3>" + res.length + " Tasks Completed</h3>";
     display(res, temp);
 }
 
 
 //Sorting
 function sortTaskLexico() {
-    tasks.sort((a, b) => { if (a.taskName < b.taskName) { return 1; } else { return -1; } });
-    var temp = "<h2>Sorted Tasks Lexicographically</h2><br>";
+    tasks.sort((a, b) => { if (a.taskName < b.taskName) { return -1; } else { return 1; } });
+    var temp = "<h3>Sorted Tasks Lexicographically</h3>";
     display(tasks, temp);
 }
 
 function sortTaskTime() {
     tasks.sort((a, b) => { return b.time - a.time; });
-    var temp = "<h2>Sorted Tasks Time Based</h2><br>";
+    var temp = "<h3>Sorted Tasks Time Based</h3>";
     display(tasks, temp);
 }
