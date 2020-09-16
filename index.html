@@ -8,28 +8,30 @@
     <meta name="keywords" content="HTML, JavaScript">
     <meta name="author" content="Vivek">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="stylesheet" type="text/css" href="assets/styles/style.css" />
 </head>
 
 <body>
-    <div>
+    <div class="main">
         <h1>TodoMatic</h1>
         <h2>What needs to be done?</h2>
 
-        <form onsubmit="return false;" autocomplete="off">
-            <input type="text" id="text" />
-            <input type="checkbox" id="check" />
-            <button type="submit" id="addBtn">Add</button>
+        <form autocomplete="off" id="form">
+            <input type="text" class="box" />
+            <input type="checkbox" />
+            <button type="submit" class="buttons">Add</button>
         </form>
 
-        <hr><br>
-        <button type="button" id="showAllBtn">Show All Tasks</button>
-        <button type="button" id="showActiveBtn">Show Active Tasks</button>
-        <button type="button" id="showCompleteBtn">Show Completed Tasks</button>
-        <button type="button" id="sortTimeBtn">Sort Tasks Time Based</button>
-        <button type="button" id="sortLexicoBtn">Sort Tasks Lexicographic Order</button>
-        <div id="result"></div>
 
+        <div class="button_tab">
+            <button type="button" id="showAllBtn" class="buttons">Show All Tasks</button>
+            <button type="button" id="showActiveBtn" class="buttons">Show Active Tasks</button>
+            <button type="button" id="showCompleteBtn" class="buttons">Show Completed Tasks</button>
+            <button type="button" id="sortTimeBtn" class="buttons">Sort Tasks Time Based</button>
+            <button type="button" id="sortLexicoBtn" class="buttons">Sort Tasks Lexicographic Order</button>
+        </div>
+        <div id="result"></div>
+        <div id="resultRealTime"></div>
     </div>
 
     <script src="assets/scripts/script.js"></script>
